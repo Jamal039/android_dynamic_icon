@@ -30,6 +30,7 @@ public class MethodCallImplementation implements MethodCallHandler {
   private static final String TAG = AndroidDynamicIconPlugin.getTAG();
 
   private static List<String> classNames = null;
+  private static List<String> suffixes = null;
   private static boolean iconChanged = false;
   private static List<String> args =  new ArrayList<>();
 
@@ -55,6 +56,11 @@ public class MethodCallImplementation implements MethodCallHandler {
               changeIcon(call);
               break;
           }
+          case "addSuffix":
+          {
+                suffixes = call.arguments();
+                break;
+          }
         default:
             result.notImplemented();
             break;
@@ -77,10 +83,15 @@ public class MethodCallImplementation implements MethodCallHandler {
         String className = args.get(0);
         PackageManager pm = activity.getPackageManager();
         String packageName = activity.getPackageName();
+        String packageNameWithoutSuffix = suffixes.stream()
+                .filter(packageName::endsWith)
+                .findFirst()
+                .map(suffix -> packageName.substring(0, packageName.length() - (suffix.length() + 1)))
+                .orElse(packageName);
         int componentState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
         int i=0;
         for(;i<classNames.size();i++) {
-            ComponentName cn = new ComponentName(packageName, packageName+"."+classNames.get(i));
+            ComponentName cn = new ComponentName(packageNameWithoutSuffix, packageNameWithoutSuffix+"."+classNames.get(i));
             if(className.equals(classNames.get(i))) {
                 componentState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
             }

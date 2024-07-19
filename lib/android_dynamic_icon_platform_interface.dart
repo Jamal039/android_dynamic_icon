@@ -28,6 +28,10 @@ abstract class AndroidDynamicIconPlatform extends PlatformInterface {
     throw UnimplementedError('initialize() has not been implemented.');
   }
 
+  Future<void> addSuffixes({required List<String> suffixes}) async {
+    throw UnimplementedError('initialize() has not been implemented.');
+  }
+
   Future<void> changeIcon({required List<String> classNames}) {
     throw UnimplementedError('changeIcon() has not been implemented.');
   }

@@ -15,6 +15,11 @@ class MethodChannelAndroidDynamicIcon extends AndroidDynamicIconPlatform {
   }
 
   @override
+  Future<void> addSuffixes({required List<String> suffixes}) async {
+    await methodChannel.invokeMethod("addSuffix", suffixes);
+  }
+
+  @override
   Future<void> changeIcon({required List<String> classNames}) async {
     await methodChannel.invokeMethod("changeIcon", classNames);
   }
